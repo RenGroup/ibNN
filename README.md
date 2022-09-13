@@ -12,3 +12,5 @@ Figure 1. The conversion of graphical knowledges of regulation to weight matrice
 
 Building the global networks of human intra-cellular signaling and GRN</br>
 One of the important gene expression regulations is the transcription factor(TF)-target regulations. The TFs are in turn, regulated through various mechanisms, one of which is the signaling networks. The signaling cascades converge on TFs, which then regulate gene expressions[ref]. To construct the basic structure of ibNN, we first compiled the signaling networks from KEGG's protein-protein relations (PPrel) data, then the GRNs by merging the TF-binding sites from GTRD and the estimations of cis-element to neighbor genes from GeneHancer database. The adjacency matrices were properly adjusted (assigned normally-distributed small numbers to the zeros and scaled according to the conventions of neural network construction). The final matrices which could be loaded into the neural network can be found in the folder "initial_weight_matrices".
+
+to be continued...
