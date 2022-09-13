@@ -4,6 +4,12 @@ Interpretable bionic neural network
 General introduction</br>
 ibNN is a novel neural network which simulates the structure of human signaling and gene regulatory network, incorporates existing biological knowledge, and learns the molecular relations from single cell RNA-seq data. The core of the network is built upon the conversion of the adjacency matrix of the topological directed graph of signaling network and TF-target relations to the initial weight matrices of ibNN. Therefore, each node in the network has been assigned an explicit name of the genes, and the trained weight matrices can be converted back to the relations between molecules, which provides clear intepretation of the meaning of the trained network.
 
+Installation</br>
+Dependencies</br>
+Parameters</br>
+Additional parameters</br>
+Shortage</br>
+
 The core design of ibNN</br>
 The core of ibNN is the conversion of the directed graph of biological networks to the initial weight matrices of neural network. The original idea of the conversion is as the following figure:
 <img width="1273" alt="adjacencyMatrixConvertion" src="https://user-images.githubusercontent.com/109563761/189895896-2aee0246-b5b4-49f5-99da-e72b0e2a000a.png">
