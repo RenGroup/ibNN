@@ -8,7 +8,7 @@ Installation</br>
 Dependencies</br>
 Parameters</br>
 Additional parameters</br>
-Shortage</br>
+Drawbacks</br>
 
 The core design of ibNN</br>
 The core of ibNN is the conversion of the directed graph of biological networks to the initial weight matrices of neural network. The original idea of the conversion is as the following figure:
