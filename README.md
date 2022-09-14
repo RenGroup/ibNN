@@ -14,9 +14,45 @@ Note that wMa.tf.txt was split into four files. After unzip the file, users shou
 ```
 cat wMa.tf.txt.01 wMa.tf.txt.02 wMa.tf.txt.03 wMa.tf.txt.04 > wMa.tf.txt
 ```
-
+Before running ibNN, there are still two things to do:</br>
+Modify *line 13* and *line 14* in 2.3.train_impute_ibNN.py, change *"/path_to/"* to the dir of where you put the matrix files. Then check the dependencies:
 ## Dependencies</br>
-## Parameters</br>
+ibNN was built upon commonly-used packages. Normally just one additional package "pandas" is needed to install. Nevertheless, users should check the versions of the packages to ensure that the script output desired results.
+```
+```
+## The format of input file</br>
+## Run and optimize parameters</br>
+Two parameters are required by ibNN to specify the path to the input .csv file (-d), and the file name of the .csv file (-i). Additional parameters can be found using:
+```
+python3 2.3.train_impute_ibNN.py -h
+```
+The result of this cmd:
+```
+usage: 2.3.train_impute_ibNN.py [-h] [-d path_to_csv] [-i input_file_name] [-e Max_num_training] [-l Learning_rate] [-c Num_cell_for_training] [-b Num_cell_in_one_batch]
+
+Train ibNN and impute gene expressions
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -d path_to_csv, --dir path_to_csv
+                        The path to the input csv.
+  -i input_file_name, --filename input_file_name
+                        The name of the input csv file.
+  -e Max_num_training, --nRounds Max_num_training
+                        Training will end if flag turns to 3 or rounds of training reach this number
+  -l Learning_rate, --learningRate Learning_rate
+                        set by experiences.
+  -c Num_cell_for_training, --nTrain Num_cell_for_training
+                        Num of cells for training, default '-1' for auto detect (2/3 of total cell number, may take time to count)
+  -b Num_cell_in_one_batch, --batchSize Num_cell_in_one_batch
+                        The median of the errors of the cells in one batch will be used for back propagation
+```
+A quick start of the script is like this:
+```
+python3 2.3.train_impute_ibNN.py -d /path_to_file/ -i masked_oneTenth_merged_expr_Vascular_geneID.csv
+```
+ibNN has been optimized for small (<100 cells) or large (>10000 cells) datasets. It will check the number of cells if "-c" option (number of cells for training) is not specified. Automatic adjustment of the parameters may be triggered when:</br>
+If (n_train (number of cells for training) < 100) & (n_rounds (max number of epochs) < 40), then n_rounds will be adjusted to 40. The reason for this adjustment is 
 ## Additional parameters</br>
 ## Drawbacks</br>
 
