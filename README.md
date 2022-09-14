@@ -45,14 +45,21 @@ optional arguments:
   -c Num_cell_for_training, --nTrain Num_cell_for_training
                         Num of cells for training, default '-1' for auto detect (2/3 of total cell number, may take time to count)
   -b Num_cell_in_one_batch, --batchSize Num_cell_in_one_batch
-                        The median of the errors of the cells in one batch will be used for back propagation
+                        The mean of the errors of the cells in one batch will be used for back propagation
 ```
 A quick start of the script is like this:
 ```
 python3 2.3.train_impute_ibNN.py -d /path_to_file/ -i masked_oneTenth_merged_expr_Vascular_geneID.csv
 ```
 ibNN has been optimized for small (<100 cells) or large (>10000 cells) datasets. It will check the number of cells if "-c" option (number of cells for training) is not specified. Automatic adjustment of the parameters may be triggered when:</br>
-If (n_train (number of cells for training) < 100) & (n_rounds (max number of epochs) < 40), then n_rounds will be adjusted to 40. The reason for this adjustment is 
+If (n_train (number of cells for training) < 100) & (n_rounds (max number of epochs) < 40), then n_rounds will be adjusted to 40. The reason for this adjustment is that when the number of cell used for training is low, there's higher possibility that the internal-calculated MSE (i.e. MSE calculated using the 1/3 cells that were not used in the training step) will be higher than normal (> 0.4), which indicate the failure of learning the general features of the data but instead, ibNN were over-fitted to the trained cells.</br>
+If (n_train > 5000) & (n_batch == 1) (i.e. the number of cells for training is more than 5000, and the number of cells used in each time of training is set to 1), then n_batch will be reset to int(n_train/1000). In this way, when n_train is > 5000, ibNN will only be trained for 1000 times in each round (i.e. epoch). For each time ibNN is trained, n_batch cells will be used to query the network and calculate the loss (i.e. target - output), then the mean of the loss of each gene was calculated, then propagated back to the network to update the weight matrices. We tested mean, median and max, and found that "mean" gave the best MSE (the lowest) for all the datasets we tested.
+### Notes about the parameters</br>
+#### The -c and -b option for large dataset
+The default -c option takes 2/3 of the total number of cells for training, the rest 1/3 for testing (i.e. calculating the MSE). The script will print the median MSE for each round (i.e. epoch). From our experiences, when n_training is larger than 500, the benefit of large number of cells for training drops quickly. This is why we control the batch size to be n_train/1000; each batch only updates the weight matrices once, therefore 1000 batches will update the weight matrices for 1000 times, just like when n_train is 1000 and n_batch is 1. 
+#### Optimizing for small dataset
+For small groups of cells, there are usually no small number of cells for training, and the MSE is usually higher. To lower down the MSE, we can extend the rounds (i.e. epochs) of training, just like what the auto-adjustment do. However, if the MSE is still high, users may try modifying an inner parameter at line 340 named "epochs_inner" to further increase the number of updates. This parameter is originally 1, meaning each cell is used once before training with another cell's data. Increasing to 2 or 3 may increase the number of updates by two or three times, but the MSE may only drop marginally. This is usually not recommended since it may result in the over-fitting of the model.
+
 ## Additional parameters</br>
 ## Drawbacks</br>
 
