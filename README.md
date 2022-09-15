@@ -17,8 +17,37 @@ cat wMa.tf.txt.01 wMa.tf.txt.02 wMa.tf.txt.03 wMa.tf.txt.04 > wMa.tf.txt
 Before running ibNN, there are still two things to do:</br>
 Modify *line 13* and *line 14* in 2.3.train_impute_ibNN.py, change *"/path_to/"* to the dir of where you put the matrix files. Then check the dependencies:
 ## Dependencies</br>
-ibNN was built upon commonly-used packages. Normally just one additional package "pandas" is needed to install. Nevertheless, users should check the versions of the packages to ensure that the script output desired results.
+ibNN was built upon commonly-used packages, and tested on both intel- and M1/M2-based macOS. If observed error messages or any other unexpected behavior, Users should check the versions of the packages.
 ```
+Python 3.8.5
+numpy 1.19.5
+scipy 1.5.0
+re 2.2.1
+argparse 1.1
+pandas 1.0.5
+```
+If users want to check the version of these packages (assume they are already installed), the following codes may be helpful:
+```
+import numpy
+import scipy.special
+import re
+import argparse
+import pandas as pd #for batch output
+import subprocess
+
+cmd = "python3 --version"
+cmdOut = subprocess.check_output(cmd,shell=True).decode("utf-8")
+cmdOut = re.sub("[\n\r]","",cmdOut)
+print(cmdOut)
+print("numpy "+numpy.__version__)
+print("scipy "+scipy.__version__)
+print("re "+re.__version__)
+print("argparse "+argparse.__version__)
+print("pandas "+pd.__version__)
+```
+Copy and paste the above codes into jupyter notebook and directly run, or into an empty python script named for example, "check_version.py", and run
+```
+python3 check_version.py
 ```
 ## The format of input file</br>
 ibNN expects scRNA-seq data file in csv format(data separated by ","), ending in ".csv" or ".txt" suffix. The data should be the raw counts of UMIs, or other values which have not been log-transformed. Each row should be a cell, and each column should be a gene. The gene identifier should be converted to NCBI's gene ID. We understand that ID conversion is always problematic with multi-mapping issues, so we made extra tips for converting the ID using the most updated official ID mapping files. Users can build the ID mapping files by their own following the instructions, and then write their own script to format the input data file, or use our scripts if the data format matches our examples.
