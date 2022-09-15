@@ -2,7 +2,7 @@
 Interpretable bionic neural network
 
 ## General introduction</br>
-ibNN is a simple fully connected neural network with only three-layers (including the input layer). However, its structure simulates human signaling and gene regulatory network. By incorporating existing biological knowledge, it can learn the molecular relations from single cell/nuclei RNA-seq data. The core of the network is built upon the conversion of the adjacency matrix of the topological directed graph of signaling network and TF-target relations to the initial weight matrices of ibNN. Therefore, each node in the network has been assigned an explicit name of the genes, and the trained weight matrices can be converted back to the relations between molecules, which provides clear intepretation of the meaning of the trained network.
+ibNN is a simple fully connected neural network with only three-layers (including the input layer). However, its structure simulates human signaling and gene regulatory network. By incorporating existing biological knowledge, it can learn the molecular relations from single cell/nuclei RNA-seq data. The core of the network is built upon the conversion of the adjacency matrix of the directed graph of signaling network and TF-target relations to the initial weight matrices of ibNN. Therefore, each node in the network has been assigned an explicit name of the genes, and the trained weight matrices can be converted back to the relations between molecules, which provides clear intepretation of the meaning of the trained network.
 
 ## Before you start
 ibNN is specially designed with several assumptions, so please check whether ibNN suits your data before going on:</br>
