@@ -50,7 +50,25 @@ Copy and paste the above codes into jupyter notebook and directly run, or into a
 python3 check_version.py
 ```
 ## The format of input file</br>
-ibNN expects scRNA-seq data file in csv format(data separated by ","), ending in ".csv" or ".txt" suffix. The data should be the raw counts of UMIs, or other values which have not been log-transformed. Each row should be a cell, and each column should be a gene. The gene identifier should be converted to NCBI's gene ID. We understand that ID conversion is always problematic with multi-mapping issues, so we made extra tips for converting the ID using the most updated official ID mapping files. Users can build the ID mapping files by their own following the instructions, and then write their own script to format the input data file, or use our scripts if the data format matches our examples.
+ibNN expects scRNA-seq data file in csv format(data separated by ","), ending in ".csv" or ".txt" suffix. The data should be the raw counts of UMIs, or other values which have not been log-transformed. Each row should be a cell, and each column should be a gene. The gene identifier should be converted to NCBI's gene ID. We understand that ID conversion is always problematic with multi-mapping issues, so we made extra tips for converting the ID using the most updated official ID mapping files. Users can build the ID mapping files by their own following the instructions, and then write their own script to format the input data file, or use our scripts if the data format matches our examples.</br>
+Run the following codes in cmd to check the 10 lines, 5 columns of the example input data:
+```
+cut -f1-5 -d ',' masked_oneTenth_merged_expr_Vascular_geneID.csv |head
+```
+We'll get the following output:
+```
+,1,10,100,1000
+CELL3898054,0,0,0,1
+CELL3898448,0,0,1,4
+CELL3898560,0,0,0,1
+CELL3899207,0,0,0,0
+CELL3899320,0,0,0,0
+CELL3899527,0,0,0,0
+CELL3899866,0,0,0,0
+CELL3900024,0,0,0,1
+CELL3900050,0,0,0,1
+```
+Note that the first line is started with a ",".
 ## Run and optimize parameters</br>
 Two parameters are required by ibNN to specify the path to the input .csv file (-d), and the file name of the .csv file (-i). Additional parameters can be found using:
 ```
