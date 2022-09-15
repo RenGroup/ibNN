@@ -4,6 +4,13 @@ Interpretable bionic neural network
 ## General introduction</br>
 ibNN is a novel neural network which simulates the structure of human signaling and gene regulatory network, incorporates existing biological knowledge, and learns the molecular relations from single cell RNA-seq data. The core of the network is built upon the conversion of the adjacency matrix of the topological directed graph of signaling network and TF-target relations to the initial weight matrices of ibNN. Therefore, each node in the network has been assigned an explicit name of the genes, and the trained weight matrices can be converted back to the relations between molecules, which provides clear intepretation of the meaning of the trained network.
 
+## Before you start
+ibNN is specially designed with several assumptions, so please check whether your data meets the assumptions before going on:</br>
+- The input of ibNN should be the raw counts or other values without log-transformation (raw counts are prefered)
+- The input of ibNN should be a group of cells with clear cell types/subtypes. This is because ibNN learns the inner mechanisms of signaling and transcription factor(TF)-target regulations. Multiple cell types may confuses ibNN since its weight matrices can represent only one set of mechanisms.
+- The current version of ibNN does not read the whole input file into memory, therefore is not memory intensive. It can process large datasets (n_cells > 5000), even with 400k cells, on a laptop (tested on M2 macBook Air).
+- The output of ibNN is not limited to the imputation results. The weight matrices are also informative since they represent the molecular interactions in signaling and gene-regulatory networks. Protocols are still under development, but examples will be available in our paper.
+
 ## Installation</br>
 Users can simply download the python script https://raw.githubusercontent.com/RenGroup/ibNN/main/ibNN_main/2.3.train_impute_ibNN.py to the local computer. 
 ```
