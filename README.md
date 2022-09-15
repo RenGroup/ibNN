@@ -126,7 +126,8 @@ The training will be stopped if the max rounds of training (the -e option) is re
 and 
 
 >median(MSE<sub>thisRound</sub>) < 0.4.
-
+#### When the training failed
+When the training is done, the median MSE will be checked. If the median MSE is > 0.4, then the imputation is risky since the model might not learned the general regulation rules, and ibNN will stop. Usually this happens when the n_train is small.
 
 ## The outputs</br>
 The outputs of ibNN are consisted of: an imputation result file started with "imputed_", two weight matrix files start with "wih_" (weight matrix of input to hidden) and "who" (weight matrix of hidden to output), and one log file start with "log_". The messages printed to screen contains where to find these files.
