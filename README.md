@@ -5,7 +5,7 @@ Interpretable bionic neural network
 ibNN is a novel neural network which simulates the structure of human signaling and gene regulatory network, incorporates existing biological knowledge, and learns the molecular relations from single cell RNA-seq data. The core of the network is built upon the conversion of the adjacency matrix of the topological directed graph of signaling network and TF-target relations to the initial weight matrices of ibNN. Therefore, each node in the network has been assigned an explicit name of the genes, and the trained weight matrices can be converted back to the relations between molecules, which provides clear intepretation of the meaning of the trained network.
 
 ## Before you start
-ibNN is specially designed with several assumptions, so please check whether your data meets the assumptions before going on:</br>
+ibNN is specially designed with several assumptions, so please check whether ibNN suits your data before going on:</br>
 - The input of ibNN should be the raw counts or other values without log-transformation (raw counts are prefered)
 - The input of ibNN should be a group of cells with clear cell types/subtypes. This is because ibNN learns the inner mechanisms of signaling and transcription factor(TF)-target regulations. Multiple cell types may confuses ibNN since its weight matrices can represent only one set of mechanisms.
 - The current version of ibNN does not read the whole input file into memory, therefore is not memory intensive. It can process large datasets (n_cells > 5000), even with 400k cells, on a laptop (tested on M2 macBook Air).
@@ -107,15 +107,29 @@ A quick start of the script is like this:
 python3 2.3.train_impute_ibNN.py -d /path_to_file/ -i masked_oneTenth_merged_expr_Vascular_geneID.csv
 ```
 ibNN has been optimized for small (<100 cells) or large (>10000 cells) datasets. It will check the number of cells if "-c" option (number of cells for training) is not specified. Automatic adjustment of the parameters may be triggered when:</br>
+- For small dataset
 If (n_train (number of cells for training) < 100) & (n_rounds (max number of epochs) < 40), then n_rounds will be adjusted to 40. The reason for this adjustment is that when the number of cell used for training is low, there's higher possibility that the internal-calculated MSE (i.e. MSE calculated using the 1/3 cells that were not used in the training step) will be higher than normal (> 0.4), which indicate the failure of learning the general features of the data but instead, ibNN were over-fitted to the trained cells.</br>
+- For large dataset
 If (n_train > 5000) & (n_batch == 1) (i.e. the number of cells for training is more than 5000, and the number of cells used in each time of training is set to 1), then n_batch will be reset to int(n_train/1000). In this way, when n_train is > 5000, ibNN will only be trained for 1000 times in each round (i.e. epoch). For each time ibNN is trained, n_batch cells will be used to query the network and calculate the loss (i.e. target - output), then the mean of the loss of each gene was calculated, then propagated back to the network to update the weight matrices. We tested mean, median and max, and found that "mean" gave the best MSE (the lowest) for all the datasets we tested.
 ### Notes about the parameters</br>
 #### The -c and -b option for large dataset
 The default -c option takes 2/3 of the total number of cells for training, the rest 1/3 for testing (i.e. calculating the MSE). The script will print the median MSE for each round (i.e. epoch). From our experiences, when n_training is larger than 500, the benefit of large number of cells for training drops quickly. This is why we control the batch size to be n_train/1000; each batch only updates the weight matrices once, therefore 1000 batches will update the weight matrices for 1000 times, just like when n_train is 1000 and n_batch is 1. 
-#### Optimizing for small dataset
+#### Further optimization for small dataset
 For small groups of cells, there are usually no small number of cells for training, and the MSE is usually higher. To lower down the MSE, we can extend the rounds (i.e. epochs) of training, just like what the auto-adjustment do. However, if the MSE is still high, users may try modifying an inner parameter at line 340 named "epochs_inner" to further increase the number of updates. This parameter is originally 1, meaning each cell is used once before training with another cell's data. Increasing to 2 or 3 may increase the number of updates by two or three times, but the MSE may only drop marginally. This is usually not recommended since it may result in the over-fitting of the model.
+#### The learning rate
+The default is 0.02, which has been tested and performed best for most of the datasets so far. Other tested learning rates are: 0.1, 0.01, 0.05, and decay. We did't provide an option of sophisticated decaying method of learning rate, which will be implemented in future versions.
+#### When to end the training
+The training will be stopped if the max rounds of training (the -e option) is reached or ibNN detected two sequential situations when:
 
-## Additional parameters</br>
+> abs(median(MSE<sub>thisRound</sub>) - median(MSE<sub>previousRound</sub>))/median(MSE<sub>previousRound</sub>) < 0.001
+
+and 
+
+>median(MSE<sub>thisRound</sub>) < 0.4.
+
+
+## The outputs</br>
+The outputs of ibNN are consisted of: an imputation result file started with "imputed_", two weight matrix files start with "wih_" (weight matrix of input to hidden) and "who" (weight matrix of hidden to output), and one log file start with "log_". The messages printed to screen contains where to find these files.
 ## Drawbacks</br>
 
 ## More on ibNN</br>
