@@ -2,7 +2,7 @@
 Interpretable bionic neural network
 
 ## General introduction</br>
-ibNN is a novel neural network which simulates the structure of human signaling and gene regulatory network, incorporates existing biological knowledge, and learns the molecular relations from single cell RNA-seq data. The core of the network is built upon the conversion of the adjacency matrix of the topological directed graph of signaling network and TF-target relations to the initial weight matrices of ibNN. Therefore, each node in the network has been assigned an explicit name of the genes, and the trained weight matrices can be converted back to the relations between molecules, which provides clear intepretation of the meaning of the trained network.
+ibNN is a simple fully connected neural network with only three-layers (including the input layer). However, its structure simulates human signaling and gene regulatory network. By incorporating existing biological knowledge, it can learn the molecular relations from single cell/nuclei RNA-seq data. The core of the network is built upon the conversion of the adjacency matrix of the topological directed graph of signaling network and TF-target relations to the initial weight matrices of ibNN. Therefore, each node in the network has been assigned an explicit name of the genes, and the trained weight matrices can be converted back to the relations between molecules, which provides clear intepretation of the meaning of the trained network.
 
 ## Before you start
 ibNN is specially designed with several assumptions, so please check whether ibNN suits your data before going on:</br>
@@ -57,7 +57,7 @@ Copy and paste the above codes into jupyter notebook and directly run, or into a
 python3 check_version.py
 ```
 ## The format of input file</br>
-ibNN expects scRNA-seq data file in csv format(data separated by ","), ending in ".csv" or ".txt" suffix. The data should be the raw counts of UMIs, or other values which have not been log-transformed. Each row should be a cell, and each column should be a gene. The gene identifier should be converted to NCBI's gene ID. We understand that ID conversion is always problematic with multi-mapping issues, so we made extra tips for converting the ID using the most updated official ID mapping files. Users can build the ID mapping files by their own following the instructions, and then write their own script to format the input data file, or use our scripts if the data format matches our examples.</br>
+ibNN expects single cell/nuclei RNA-seq data file in csv format(data separated by ","), ending in ".csv" or ".txt" suffix. The data should be the raw counts of UMIs, or other values which have not been log-transformed. Each row should be a cell, and each column should be a gene. The gene identifier should be converted to NCBI's gene ID. We understand that ID conversion is always problematic with multi-mapping issues, so we made extra tips for converting the ID using the most updated official ID mapping files. Users can build the ID mapping files by their own following the instructions, and then write their own script to format the input data file, or use our scripts if the data format matches our examples.</br>
 Run the following codes in cmd to check the 10 lines, 5 columns of the example input data:
 ```
 cut -f1-5 -d ',' masked_oneTenth_merged_expr_Vascular_geneID.csv |head
@@ -131,7 +131,12 @@ When the training is done, the median MSE will be checked. If the median MSE is 
 
 ## The outputs</br>
 The outputs of ibNN are consisted of: an imputation result file started with "imputed_", two weight matrix files start with "wih_" (weight matrix of input to hidden) and "who" (weight matrix of hidden to output), and one log file start with "log_". The messages printed to screen contains where to find these files.
-## Drawbacks</br>
+## Limitations</br>
+There are several limitations of ibNN:</br>
+- ibNN needs input cells to be of the same cell type, or with similar gene regulatory mechanisms. This means unless the scRNA-seq library is prepared with clear cell-surface markers, ibNN has to wait for the cell identity assignments to be done.
+- ibNN only incorporates two of the mechanisms that control gene expressions, however, many other well-known mechanisms have been demonstrated to greatly affect gene expressions, i.e. epigenetics. Although we have successfully trained ibNN for many cell types from several tissues, we cannot rule out the possibility that under certain conditions, there are cell types whose gene expressions are not reflected by cell signaling networks.
+- ibNN currently is only able to process human data. Although KEGG also collected PPrel data for other animals such as mouse and monkey, the TF-target relations seems to be also important, since using data other than GeneHancer's estimations failed in mouse and monkey (GeneHancer provides cis-element estimations only for human). The training of mouse and monkey data showed signs of learning (the MSE drops), but failed in the accuracy control (MSE > 2)
+- ibNN's code have not taken the advantage of GPU processing. It can be further optimized to increase the speed of training.
 
 ## More on ibNN</br>
 ### The core of ibNN</br>
