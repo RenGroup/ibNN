@@ -7,7 +7,7 @@ ibNN is a simple fully connected neural network with only three-layers (includin
 ## Before you start
 ibNN is specially designed with several assumptions, so please check whether ibNN suits your data before going on:</br>
 - The input of ibNN should be the raw counts or other values without log-transformation (raw counts are prefered)
-- The input of ibNN should be a group of cells with clear cell types/subtypes. This is because ibNN learns the inner mechanisms of signaling and transcription factor(TF)-target regulations. Multiple cell types may confuses ibNN since its weight matrices can represent only one set of mechanisms.
+- The input of ibNN should be a group of cells with clear cell types/subtypes. This is because ibNN learns the inner mechanisms of signaling and transcription factor(TF)-target regulations. Input of multiple cell types may confuses ibNN since its weight matrices can represent only one set of mechanisms.
 - The current version of ibNN does not read the whole input file into memory, therefore is not memory intensive. It can process large datasets (n_cells > 5000), even with 400k cells, on a laptop (tested on M2 macBook Air).
 - The output of ibNN is not limited to the imputation results. The weight matrices are also informative since they represent the molecular interactions in signaling and gene-regulatory networks. Protocols are still under development, but examples will be available in our paper.
 
@@ -16,15 +16,15 @@ Users can simply download the python script https://raw.githubusercontent.com/Re
 ```
 wget https://raw.githubusercontent.com/RenGroup/ibNN/main/ibNN_main/2.3.train_impute_ibNN.py
 ```
-Then download the PPrel and TF-target matrix file: `ibNN/initial_weight_matrices/wMa.pprel.txt.zip` and `ibNN/initial_weight_matrices/wMa.tf.txt.01-04.zip`
-Note that wMa.tf.txt was split into four files. After unzip the file, users should concatenate the files in the correct order to restore the matrix file:
+Then download the PPrel and TF-target matrix file: [wMa.pprel.txt](https://github.com/RenGroup/ibNN/blob/main/initial_weight_matrices/wMa.pprel.txt.zip) and the four split files of wMa.tf.txt: [wMa.tf.txt.01.zip](https://github.com/RenGroup/ibNN/blob/main/initial_weight_matrices/wMa.tf.txt.01.zip),[wMa.tf.txt.02.zip](https://github.com/RenGroup/ibNN/blob/main/initial_weight_matrices/wMa.tf.txt.02.zip), [wMa.tf.txt.03.zip](https://github.com/RenGroup/ibNN/blob/main/initial_weight_matrices/wMa.tf.txt.03.zip), and [wMa.tf.txt.04.zip](https://github.com/RenGroup/ibNN/blob/main/initial_weight_matrices/wMa.tf.txt.04.zip) </br>
+After unzip the files, users should concatenate the files in the correct order to restore the file of wMa.tf.txt:
 ```
 cat wMa.tf.txt.01 wMa.tf.txt.02 wMa.tf.txt.03 wMa.tf.txt.04 > wMa.tf.txt
 ```
 Before running ibNN, there are still two things to do:</br>
 Modify *line 13* and *line 14* in 2.3.train_impute_ibNN.py, change *"/path_to/"* to the dir of where you put the matrix files. Then check the dependencies:
 ## Dependencies</br>
-ibNN was built upon commonly-used packages, and tested on both intel- and M1/M2-based macOS. If observed error messages or any other unexpected behavior, Users should check the versions of the packages.
+ibNN was built upon commonly-used packages, and tested on both intel- and M1/M2-based macOS. If observed error messages or any other unexpected behavior, please first check the versions of the packages.
 ```
 Python 3.8.5
 numpy 1.19.5
@@ -33,6 +33,7 @@ re 2.2.1
 argparse 1.1
 pandas 1.0.5
 ```
+If the errors persist, please report the bugs to chix@big.ac.cn.</br>
 If users want to check the version of these packages (assume they are already installed), the following codes may be helpful:
 ```
 import numpy
@@ -52,7 +53,7 @@ print("re "+re.__version__)
 print("argparse "+argparse.__version__)
 print("pandas "+pd.__version__)
 ```
-Copy and paste the above codes into jupyter notebook and directly run, or into an empty python script named for example, "check_version.py", and run
+Copy and paste the above codes into jupyter notebook and directly run, or into an empty python script named for example, "check_version.py", and run in cmd:
 ```
 python3 check_version.py
 ```
@@ -106,11 +107,11 @@ A quick start of the script is like this:
 ```
 python3 2.3.train_impute_ibNN.py -d /path_to_file/ -i masked_oneTenth_merged_expr_Vascular_geneID.csv
 ```
-ibNN has been optimized for small (<100 cells) or large (>10000 cells) datasets. It will check the number of cells if "-c" option (number of cells for training) is not specified. Automatic adjustment of the parameters may be triggered when:</br>
-- For small dataset
+ibNN has been optimized for small (<100 cells) or large (>5000 cells) datasets. It will check the number of cells if "-c" option (number of cells for training) is not specified. Automatic adjustment of the parameters may be triggered when:</br>
+- **For small dataset**  
 If (n_train (number of cells for training) < 100) & (n_rounds (max number of epochs) < 40), then n_rounds will be adjusted to 40. The reason for this adjustment is that when the number of cell used for training is low, there's higher possibility that the internal-calculated MSE (i.e. MSE calculated using the 1/3 cells that were not used in the training step) will be higher than normal (> 0.4), which indicate the failure of learning the general features of the data but instead, ibNN were over-fitted to the trained cells.</br>
-- For large dataset
-If (n_train > 5000) & (n_batch == 1) (i.e. the number of cells for training is more than 5000, and the number of cells used in each time of training is set to 1), then n_batch will be reset to int(n_train/1000). In this way, when n_train is > 5000, ibNN will only be trained for 1000 times in each round (i.e. epoch). For each time ibNN is trained, n_batch cells will be used to query the network and calculate the loss (i.e. target - output), then the mean of the loss of each gene was calculated, then propagated back to the network to update the weight matrices. We tested mean, median and max, and found that "mean" gave the best MSE (the lowest) for all the datasets we tested.
+- **For large dataset**  
+If (n_train > 5000) & (n_batch == 1) (i.e. the number of cells for training is more than 5000, and the number of cells used in each time of training is set to 1), then n_batch will be reset to int(n_train/1000). In this way, when n_train is > 5000, ibNN will only be trained for 1000 times in each round (i.e. epoch). For each time ibNN is trained, n_batch cells will be used to query the network and calculate the loss (i.e. target - output), then the mean of the loss of each gene was calculated, then propagated back to the network to update the weight matrices. We tested mean, median and max, and found that "mean" gave the best MSE (the lowest) for all the datasets we tested. Users are welcome to test the methods. Simply change "numpy.mean" at line 204 to other functions.
 ### Notes about the parameters</br>
 #### The -c and -b option for large dataset
 The default -c option takes 2/3 of the total number of cells for training, the rest 1/3 for testing (i.e. calculating the MSE). The script will print the median MSE for each round (i.e. epoch). From our experiences, when n_training is larger than 500, the benefit of large number of cells for training drops quickly. This is why we control the batch size to be n_train/1000; each batch only updates the weight matrices once, therefore 1000 batches will update the weight matrices for 1000 times, just like when n_train is 1000 and n_batch is 1. 
@@ -119,13 +120,14 @@ For small groups of cells, the MSE is usually higher. To lower down the MSE, we 
 #### The learning rate
 The default is 0.02, which has been tested and performed best for most of the datasets so far. Other tested learning rates are: 0.1, 0.01, 0.05, and decay. We did't provide an option of sophisticated decaying method of learning rate, which will be implemented in future versions.
 #### When to end the training
-The training will be stopped if the max rounds of training (the -e option) is reached or ibNN detected two sequential situations when:
+The training will be stopped if the max rounds of training (the -e option) is reached or ibNN detected the following situation:
 
 > abs(median(MSE<sub>thisRound</sub>) - median(MSE<sub>previousRound</sub>))/median(MSE<sub>previousRound</sub>) < 0.001
 
 and 
+> median(MSE<sub>thisRound</sub>) < 0.4
 
->median(MSE<sub>thisRound</sub>) < 0.4.
+for two sequential rounds. When running ibNN, the value of a "flag" will be printed, which is usually 1. If met the above situation, the value of flag will be added by 1; if not, flag will be set to 1 again. The training will be stopped when flag == 3.
 #### When the training failed
 When the training is done, the median MSE will be checked. If the median MSE is > 0.4, then the imputation is risky since the model might not learned the general regulation rules, and ibNN will stop. Usually this happens when the n_train is small. If n_train > 100 and MSE is > 0.4, then the input cells might be too heterogenous (consists of two or more cell types) or the structure of ibNN does not suit the cell type. For the former one, users may try to use sub-groups of the cells to reduce the heterogeneity. For the later one, we are developing more comprehensive and reasonable neural network structures to incorporate gene expression regulatory mechanisms in addition to current signaling and TF-target networks.
 
