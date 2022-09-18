@@ -76,7 +76,24 @@ CELL3899866,0,0,0,0
 CELL3900024,0,0,0,1
 CELL3900050,0,0,0,1
 ```
-Note that the first line is started with a ",".
+Note that the first line is started with a ",". If your data is in the transposed format, you may consider "datamash" to transpose the large dataset with low memory and time consumption. "datamash" can be installed like this:
+```
+#download source code
+curl -0 http://ftp.gnu.org/gnu/datamash/datamash-1.8.tar.gz --output datamash-1.8.tar.gz
+#unzip and make
+tar -xzf datamash-1.8.tar.gz
+cd datamash-1.8
+./configure
+make
+make check
+sudo make install
+datamash --help
+```
+To transpose a csv file, this example code may be helpful:
+```
+cat Cells.UMI.collapsed.csv|datamash transpose -t ',' > tr_Cells.UMI.collapsed.csv
+```
+
 ## Run and optimize parameters</br>
 Two parameters are required by ibNN to specify the path to the input .csv file (-d), and the file name of the .csv file (-i). Additional parameters can be found using:
 ```
