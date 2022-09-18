@@ -191,7 +191,7 @@ for two sequential rounds. When running ibNN, the value of a "flag" will be prin
 When the training is done, the median MSE will be checked. If the median MSE is > 0.4, then the imputation is risky since the model might not learned the general regulation rules, and ibNN will stop. Usually this happens when the n_train is small. If n_train > 100 and MSE is > 0.4, then the input cells might be too heterogenous (consists of two or more cell types) or the structure of ibNN does not suit the cell type. For the former one, users may try to use sub-groups of the cells to reduce the heterogeneity. For the later one, we are developing more comprehensive and reasonable neural network structures to incorporate gene expression regulatory mechanisms in addition to current signaling and TF-target networks.
 
 ## The outputs</br>
-The outputs of ibNN are consisted of: an imputation result file started with "imputed_", two weight matrix files start with "wih_" (weight matrix of input to hidden) and "who" (weight matrix of hidden to output), and one log file start with "log_". The messages printed to screen contains where to find these files.
+The outputs of ibNN are consisted of: an imputation result file started with "imputed_", two weight matrix files start with "wih_" (weight matrix of input to hidden) and "who_" (weight matrix of hidden to output), and one log file start with "log_". The messages printed to screen contains where to find these files.
 ## Limitations</br>
 There are several limitations of ibNN:</br>
 - ibNN needs input cells to be of the same cell type, or with similar gene regulatory mechanisms. This means unless the scRNA-seq library is prepared with clear cell-surface markers, ibNN has to wait for the cell identity assignments to be done.
