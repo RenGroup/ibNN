@@ -25,3 +25,8 @@ to check the help info. Example code:
 perl /path_to/2.convert_to_geneID.pl csv ENSG row expr_GSM3988006_Astrocyte.csv
 ```
 Note that current script can only convert the first row's ID since our data are all arranged in the way that each row is a cell, and each column is a gene
+</br>
+However, the script do support .csv and .tsv format, and ID types of "ENSG", "ENST", "ENSP", "NM", "NP", "symbol", and "synonyms". One additonal type is
+"sysy", which converts both symbol and synonyms to NCBI's gene IDs.
+</br>
+In fact, with the match table, advanced users can write their own script to convert IDs between different types.
