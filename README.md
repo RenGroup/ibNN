@@ -58,6 +58,7 @@ Copy and paste the above codes into jupyter notebook and directly run, or into a
 python3 check_version.py
 ```
 ## The format of input file</br>
+### General format requirements
 ibNN expects single cell/nuclei RNA-seq data file in csv format(data separated by ","), ending in ".csv" or ".txt" suffix. The data should be the raw counts of UMIs, or other values which have not been log-transformed. Each row should be a cell, and each column should be a gene. The gene identifier should be converted to NCBI's gene ID. We understand that ID conversion is always problematic with multi-mapping issues, so we made extra [tips](https://github.com/RenGroup/ibNN/blob/main/id_conversion/README_idConversion.md) for converting the ID using the most updated official ID mapping files. Users can build the ID mapping files by their own following the instructions, and then write their own script to format the input data file, or use our scripts if the data format matches our examples.</br>
 Run the following codes in cmd to check the 10 lines, 5 columns of the example input data:
 ```
@@ -76,7 +77,9 @@ CELL3899866,0,0,0,0
 CELL3900024,0,0,0,1
 CELL3900050,0,0,0,1
 ```
-Note that the first line is started with a ",". If your data is in the transposed format, you may consider "datamash" to transpose the large dataset with low memory and time consumption. "datamash" can be installed like this:
+Note that the first line is started with a ",". 
+### Transpose the expression matrix
+If your data is in the transposed format, you may consider "datamash" to transpose the large dataset with low memory and time consumption. "datamash" can be installed like this:
 ```
 #download source code
 curl -0 http://ftp.gnu.org/gnu/datamash/datamash-1.8.tar.gz --output datamash-1.8.tar.gz
@@ -92,6 +95,35 @@ datamash --help
 To transpose a csv file, this example code may be helpful:
 ```
 cat Cells.UMI.collapsed.csv|datamash transpose -t ',' > tr_Cells.UMI.collapsed.csv
+```
+### Handling large dataset in .loom format
+Loom format is an efficient way of accessing large datasets without loading the entire matrix into the memory. For large datasets like GSE156793 which contains more than four million cells, only a .loom file was provided to store the count matrix. Currently ibNN is not capable of directly access the loom files, therefore cannot benefit from the conveniences of loom format, but we provide alternative solutions to handle the data, at the expenses of time consumption. We will implement the ability of accessing loom files in ibNN in future.
+</br>
+To access loom files in R, one can use SeuratDisk:
+```
+library(SeuratDisk)
+sc.793.loom <- Connect(filename = "/path_to/GSE156793_S3_gene_count.loom", mode = "r")
+sc.793.loom[["matrix"]][1:5,1:5]
+```
+The output is like this:
+![image](https://user-images.githubusercontent.com/109563761/190891770-3b4b8278-5a94-4400-a523-ac7dbba2c94c.png)
+Unlike python package "Dask", SeuratDisk allows positional indexing.
+</br>
+To output the expression data of desired cells with large numbers, we recommend the R package "vroom". For example, if you want to export the entire matrix of "GSE156793_S3_gene_count.loom", you may try the following R code:
+```
+install.packages("vroom")
+library(vroom)
+n=0
+end.this<-4062980
+for(i in seq(1,4065000,15000)){
+  n=n+1
+  end.this<-i+14999
+  tmp.1<-sc.793.loom[["matrix"]][i:end.this,]
+  tmp.1<-as.data.frame(tmp.1)
+  vroom_write(tmp.1, paste0("/path_to_output/file",n,".csv.gz"), 
+              delim = ",", quote = "none", col_names = F, num_threads = 6)
+  rm(list="tmp.1")
+}
 ```
 
 ## Run and optimize parameters</br>
