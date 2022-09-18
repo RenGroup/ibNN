@@ -106,7 +106,9 @@ sc.793.loom <- Connect(filename = "/path_to/GSE156793_S3_gene_count.loom", mode 
 sc.793.loom[["matrix"]][1:5,1:5]
 ```
 The output is like this:
+</br>
 ![image](https://user-images.githubusercontent.com/109563761/190891770-3b4b8278-5a94-4400-a523-ac7dbba2c94c.png)
+</br>
 Unlike python package "Dask", SeuratDisk allows positional indexing.
 </br>
 To output the expression data of desired cells with large numbers, we recommend the R package "vroom". For example, if you want to export the entire matrix of "GSE156793_S3_gene_count.loom", you may try the following R code:
@@ -114,7 +116,6 @@ To output the expression data of desired cells with large numbers, we recommend 
 install.packages("vroom")
 library(vroom)
 n=0
-end.this<-4062980
 for(i in seq(1,4065000,15000)){
   n=n+1
   end.this<-i+14999
