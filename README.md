@@ -11,14 +11,14 @@ ibNN is specially designed with several assumptions, so please check whether ibN
 - The current version of ibNN does not read the whole input file into memory, therefore is not memory intensive. It can process large datasets (n_cells > 5000), even with 400k cells, on a laptop (tested on M2 macBook Air).
 - The output of ibNN is not limited to the imputation results. The weight matrices are also informative since they represent the molecular interactions in signaling and gene-regulatory networks. Protocols are still under development, but examples will be available in our paper.
 
-## The contents
+## Contents
 - [Installation](https://github.com/RenGroup/ibNN/blob/main/README.md#installation)
 - [Dependencies](https://github.com/RenGroup/ibNN/blob/main/README.md#dependencies)
 - [The format of input file](https://github.com/RenGroup/ibNN/blob/main/README.md#the-format-of-input-file)
 - [Run and optimize parameters](https://github.com/RenGroup/ibNN/blob/main/README.md#run-and-optimize-parameters)
 - [The outputs](https://github.com/RenGroup/ibNN/blob/main/README.md#the-outputs)
 - [Limitations](https://github.com/RenGroup/ibNN/blob/main/README.md#limitations)
-- [Design of ibNN](https://github.com/RenGroup/ibNN/blob/main/README.md#more-on-ibnn)
+- [Design of ibNN](https://github.com/RenGroup/ibNN/blob/main/README.md#design-of-ibnn)
 
 ## Installation</br>
 Users can simply download the python script https://raw.githubusercontent.com/RenGroup/ibNN/main/ibNN_main/2.3.train_impute_ibNN.py to the local computer. 
