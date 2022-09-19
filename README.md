@@ -21,9 +21,9 @@ ibNN is specially designed with several assumptions, so please check whether ibN
 - [Design of ibNN](https://github.com/RenGroup/ibNN/blob/main/README.md#design-of-ibnn)
 
 ## Installation</br>
-Users can simply download the python script https://raw.githubusercontent.com/RenGroup/ibNN/main/ibNN_main/2.3.train_impute_ibNN.py to the local computer. 
+Users can simply download the python script https://raw.githubusercontent.com/RenGroup/ibNN/main/ibNN_main/2.5.train_impute_ibNN.py to the local computer. 
 ```
-wget https://raw.githubusercontent.com/RenGroup/ibNN/main/ibNN_main/2.3.train_impute_ibNN.py
+wget https://raw.githubusercontent.com/RenGroup/ibNN/main/ibNN_main/2.5.train_impute_ibNN.py
 ```
 Then download the PPrel and TF-target matrix file: [wMa.pprel.txt](https://github.com/RenGroup/ibNN/blob/main/initial_weight_matrices/wMa.pprel.txt.zip) and the four split files of wMa.tf.txt: [wMa.tf.txt.01.zip](https://github.com/RenGroup/ibNN/blob/main/initial_weight_matrices/wMa.tf.txt.01.zip),[wMa.tf.txt.02.zip](https://github.com/RenGroup/ibNN/blob/main/initial_weight_matrices/wMa.tf.txt.02.zip), [wMa.tf.txt.03.zip](https://github.com/RenGroup/ibNN/blob/main/initial_weight_matrices/wMa.tf.txt.03.zip), and [wMa.tf.txt.04.zip](https://github.com/RenGroup/ibNN/blob/main/initial_weight_matrices/wMa.tf.txt.04.zip) </br>
 After unzip the files, users should concatenate the files in the correct order to restore the file of wMa.tf.txt:
