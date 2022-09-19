@@ -1,0 +1,1 @@
+Version 2.5: add one additional rule to end the training before reaching max n_rounds: if the MSE of this round is larger than previous round, flag ++
