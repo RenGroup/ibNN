@@ -8,7 +8,7 @@ ibNN is a simple fully connected neural network with only three-layers (includin
 ibNN is specially designed with several assumptions, so please check whether ibNN suits your data before going on:</br>
 - The input of ibNN should be the raw counts or other values without log-transformation (raw counts are prefered)
 - The input of ibNN should be a group of cells with clear cell types/subtypes. This is because ibNN learns the inner mechanisms of signaling and transcription factor(TF)-target regulations. Input of multiple cell types may confuses ibNN since its weight matrices can represent only one set of mechanisms.
-- The current version of ibNN does not read the whole input file into memory, therefore is not memory intensive. It can process large datasets (n_cells > 5000), even with 400k cells, on a laptop (tested on M2 macBook Air).
+- The current version of ibNN does not read the whole input file into memory, therefore is not memory intensive. It can process large datasets (n_cells > 5000), even with 400k cells, on a laptop (it took about 27 hours, tested on M2 macBook Air).
 - The output of ibNN is not limited to the imputation results. The weight matrices are also informative since they represent the molecular interactions in signaling and gene-regulatory networks. Protocols are still under development, but examples will be available in our paper.
 
 ## Contents
