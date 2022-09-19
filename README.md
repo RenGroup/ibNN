@@ -186,7 +186,7 @@ The training will be stopped if the max rounds of training (the -e option) is re
 and 
 > median(MSE<sub>thisRound</sub>) < 0.4
 
-for two sequential rounds. When running ibNN, the value of a "flag" will be printed, which is usually 1. If met the above situation, the value of flag will be added by 1; if not, flag will be set to 1 again. The training will be stopped when flag == 3.
+for two sequential rounds. When running ibNN, the value of a "flag" will be printed, which is usually 1. If met the above situation, the value of flag will be added by 1; if not, flag will be set to 1 again. The training will be stopped when flag == 3. Additionally, if the median MSE of this round is bigger than the previous round, flag = flag +1.
 #### When the training failed
 When the training is done, the median MSE will be checked. If the median MSE is > 0.4, then the imputation is risky since the model might not learned the general regulation rules, and ibNN will stop. Usually this happens when the n_train is small. If n_train > 100 and MSE is > 0.4, then the input cells might be too heterogenous (consists of two or more cell types) or the structure of ibNN does not suit the cell type. For the former one, users may try to use sub-groups of the cells to reduce the heterogeneity. For the later one, we are developing more comprehensive and reasonable neural network structures to incorporate gene expression regulatory mechanisms in addition to current signaling and TF-target networks.
 
