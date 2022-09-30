@@ -21,9 +21,9 @@ ibNN is specially designed with several assumptions, so please check whether ibN
 - [Design of ibNN](https://github.com/RenGroup/ibNN/blob/main/README.md#design-of-ibnn)
 
 ## Installation</br>
-Users can simply download the python script https://raw.githubusercontent.com/RenGroup/ibNN/main/ibNN_main/2.5.train_impute_ibNN.py to the local computer. 
+Users can simply download the python script https://raw.githubusercontent.com/RenGroup/ibNN/main/ibNN_main/2.5.2.train_impute_ibNN.py to the local computer. 
 ```
-wget https://raw.githubusercontent.com/RenGroup/ibNN/main/ibNN_main/2.5.train_impute_ibNN.py
+wget https://raw.githubusercontent.com/RenGroup/ibNN/main/ibNN_main/2.5.2.train_impute_ibNN.py
 ```
 Then download the PPrel and TF-target matrix file: [wMa.pprel.txt](https://github.com/RenGroup/ibNN/blob/main/initial_weight_matrices/wMa.pprel.txt.zip) and the four split files of wMa.tf.txt: [wMa.tf.txt.01.zip](https://github.com/RenGroup/ibNN/blob/main/initial_weight_matrices/wMa.tf.txt.01.zip),[wMa.tf.txt.02.zip](https://github.com/RenGroup/ibNN/blob/main/initial_weight_matrices/wMa.tf.txt.02.zip), [wMa.tf.txt.03.zip](https://github.com/RenGroup/ibNN/blob/main/initial_weight_matrices/wMa.tf.txt.03.zip), and [wMa.tf.txt.04.zip](https://github.com/RenGroup/ibNN/blob/main/initial_weight_matrices/wMa.tf.txt.04.zip) </br>
 After unzip the files, users should concatenate the files in the correct order to restore the file of wMa.tf.txt:
@@ -31,7 +31,7 @@ After unzip the files, users should concatenate the files in the correct order t
 cat wMa.tf.txt.01 wMa.tf.txt.02 wMa.tf.txt.03 wMa.tf.txt.04 > wMa.tf.txt
 ```
 Before running ibNN, there are still two things to do:</br>
-Modify *line 13* and *line 14* in 2.3.train_impute_ibNN.py, change *"/path_to/"* to the dir of where you put the matrix files. Then check the dependencies:
+Modify *line 241* and *line 253* in 2.5.2.train_impute_ibNN.py, change *"/path_to/wMa.xxx.txt"* to the dir of where you put the matrix files. Then check the dependencies:
 ## Dependencies</br>
 ibNN was built upon commonly-used packages, and tested on both intel- and M1/M2-based macOS. If observed error messages or any other unexpected behavior, please first check the versions of the packages.
 ```
