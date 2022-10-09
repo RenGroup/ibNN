@@ -16,3 +16,8 @@ perl 1.split_cellType.pl tr_GSM3988016_SAM24362294.txt GSM3988016
 ```
 for i in `ls expr_*`; do echo $i; perl 0.convert_to_geneID.pl csv ENSG row $i; done
 ```
+- Now merge all the files of the same cell type:
+```
+perl 2.merge_samples.pl
+```
+This script will automatically search for all the files of the same cell type in the folder, keep one header and remove all the other headers, then merge them into one matrix starting with "merged_".
