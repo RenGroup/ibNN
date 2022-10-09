@@ -12,3 +12,4 @@ for i in `ls GSM39880*`; do echo $i;cat $i|datamash transpose > tr_$i; done
 ```
 perl 1.split_cellType.pl tr_GSM3988016_SAM24362294.txt GSM3988016
 ```
+- 
