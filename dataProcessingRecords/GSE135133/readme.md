@@ -21,3 +21,11 @@ for i in `ls expr_*`; do echo $i; perl 0.convert_to_geneID.pl csv ENSG row $i; d
 perl 2.merge_samples.pl
 ```
 This script will automatically search for all the files of the same cell type in the folder, keep one header and remove all the other headers, then merge them into one matrix starting with "merged_".
+- Generate masked and testing data:
+```
+for i in `ls merged_expr_*`; do echo $i; python 3.generate_testingData.py /path_to_merged_files/ $i; done
+```
+This python script will do the following things:</br>
+(1) It will remove the genes which failed in the conversion step</br>
+(2) It will filter the cells by the number of genes per UMI, suggested by the QC [here](https://bookdown.org/ytliu13207/SingleCellMultiOmicsDataAnalysis/seurat-qc-cell-level-filtering.html)</br>
+(3) It will randomly mask one tenth of the non-zero values in one cell into zeros, producing the masked files. The original values of the masked genes will be stored in the testing file
