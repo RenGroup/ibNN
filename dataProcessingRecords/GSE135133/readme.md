@@ -28,4 +28,6 @@ for i in `ls merged_expr_*`; do echo $i; python 3.generate_testingData.py /path_
 This python script will do the following things:</br>
 (1) It will remove the genes which failed in the conversion step</br>
 (2) It will filter the cells by the number of genes per UMI, suggested by the QC [here](https://bookdown.org/ytliu13207/SingleCellMultiOmicsDataAnalysis/seurat-qc-cell-level-filtering.html)</br>
-(3) It will randomly mask one tenth of the non-zero values in one cell into zeros, producing the masked files. The original values of the masked genes will be stored in the testing file
+(3) It will randomly mask one tenth of the non-zero values in one cell into zeros, producing the masked files. The original values of the masked genes will be stored in the testing file</br>
+(4) It will create two new folders to hold the masked and testing files</br>
+
