@@ -3,7 +3,7 @@ use strict;
 use warnings;
 
 if(@ARGV != 2){
-  die "Usage: perl $0 <expr_matrix.csv> <outPrefix>\n";
+  die "Usage: perl $0 <expr_matrix.txt> <outPrefix>\n";
 }
 
 my $celltype = "/path_to/GSE135133_clusterAssignments.txt"; #the meta data file
