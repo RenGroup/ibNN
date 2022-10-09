@@ -12,4 +12,7 @@ for i in `ls GSM39880*`; do echo $i;cat $i|datamash transpose > tr_$i; done
 ```
 perl 1.split_cellType.pl tr_GSM3988016_SAM24362294.txt GSM3988016
 ```
-- 
+- Convert the gene identifiers into gene id:
+```
+for i in `ls expr_*`; do echo $i; perl 0.convert_to_geneID.pl csv ENSG row $i; done
+```
