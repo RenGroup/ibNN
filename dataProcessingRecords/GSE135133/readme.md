@@ -30,4 +30,9 @@ This python script will do the following things:</br>
 (2) It will filter the cells by the number of genes per UMI, suggested by the QC [here](https://bookdown.org/ytliu13207/SingleCellMultiOmicsDataAnalysis/seurat-qc-cell-level-filtering.html)</br>
 (3) It will randomly mask one tenth of the non-zero values in one cell into zeros, producing the masked files. The original values of the masked genes will be stored in the testing file</br>
 (4) It will create two new folders to hold the masked and testing files</br>
+- Now we can do the training and imputation:
+```
+for i in ls `masked_oneTenth*`; do echo $i; python 2.5.2.train_impute_ibNN.py -d /path/to/ -i $i; done
+```
+This script will create three folders: ../log/log_...txt which records the information during training; ../imputed/imputed_...csv which is the imputed matrix; ../wma/who_...txt and ../wma/wih...txt, which are the weight matrices of input to hidden (wih) and hidden to output (who).
 
