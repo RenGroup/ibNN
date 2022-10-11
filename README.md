@@ -216,6 +216,6 @@ ibNN consists of only three fully connected layers, the input, middle and output
 ### The assumptions of ibNN
 - The gene expressions in the cells of the same cell type are regulated by the same set of regulatory mechanisms. The two weight matrices of ibNN reflect the underlying regulatory rules of gene expressions. If the input cells have different regulatory mechanisms, then the trained weight matrices are the compromised matrices for the different types of cells.
 - The cells are in a stable state.
-
-### The assumptions of ibNN
+- The values of gene expressions can be explained by transcription factors and signaling pathways.
+- The activation function (sigmoid) simulate the real signal transductions.
 to be continued...
