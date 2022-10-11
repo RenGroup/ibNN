@@ -213,4 +213,9 @@ One of the important gene expression regulations is the transcription factor(TF)
 ### The structure of ibNN
 ibNN consists of only three fully connected layers, the input, middle and output layers. The input and output layers are all gene expressions, but the number of nodes are different. To fit for the signaling and TF-target networks, the number of nodes in the input layer is 3503, representing the genes in the PPrel network built from KEGG's human knowledgebase. The number of nodes in the middle layer is 408, representing the number of the transcription factors shared by the PPrel network and the TF-target network. The number of the output layer is 18921, representing the number of NCBI's gene ids of the genes regulated by TFs in GRN. Each node in ibNN has been assigned an explicit gene id.
 
+### The assumptions of ibNN
+- The gene expressions in the cells of the same cell type are regulated by the same set of regulatory mechanisms. The two weight matrices of ibNN reflect the underlying regulatory rules of gene expressions. If the input cells have different regulatory mechanisms, then the trained weight matrices are the compromised matrices for the different types of cells.
+- The cells are in a stable state.
+
+### The assumptions of ibNN
 to be continued...
