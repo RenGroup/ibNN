@@ -1,4 +1,4 @@
-# The records of processing data from GSE135133
+# The records of data processing for GSE135133
 - Processed data (raw counts) "GSE135133_RAW.tar" can be downloaded [here](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE135133) together with a file "GSE135133_clusterAssignments.txt.gz" containing the meta-data of each cell. Unzip the two files. 
 - Use vi or vim to add a "\t" at the start of the first line for all of the 11 files</br>
 ```
